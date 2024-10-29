@@ -6,7 +6,7 @@ TRT_VERSION=${2:-"8.5.3.1"}
 OS_VERSION=${3:-"ubuntu20.04"}
 TARGETARCH=${4:-"amd64"}
 CATCH2_VERSION=${5:-v3.2.1}
-NUM_THREADS=${6:-"-1"}
+NUM_THREADS=${6:-"4"}
 ABSL_VERSION=${7:-"lts_2021_11_02"}
 CMAKE_VERSION=${8:-"3.19.2"}
 FMT_VERSION=${9:-"9.0.0"}
@@ -292,7 +292,7 @@ install_catch2() {
         mkdir build &&
         cd build &&
         cmake .. &&
-        make install -j${NUM_THREADS}
+        make install -j
 }
 
 # install absl
@@ -306,7 +306,7 @@ install_absl() {
     # build cmake
     mkdir build && cd build &&
         cmake -DCMAKE_POSITION_INDEPENDENT_CODE=ON .. &&
-        make -j${MAKE_JOBS} &&
+        make -j &&
         make install &&
         cd /tmp &&
         rm -rf abseil-cpp
@@ -430,7 +430,7 @@ install_opencv_desktop_gpu() {
         -DOPENCV_ENABLE_NONFREE=ON \
         -DOPENCV_GENERATE_PKGCONFIG=YES \
         .. &&
-        make -j6 &&
+        make -j &&
         make install
 }
 
@@ -444,7 +444,7 @@ install_fmt() {
 
     # build cmake
     cmake -Bbuild -H. -DCMAKE_POSITION_INDEPENDENT_CODE=ON &&
-        cmake --build build -j${NUM_THREADS} &&
+        cmake --build build -j &&
         cmake --build build --target install &&
         cd /tmp &&
         rm -rf fmt
@@ -766,7 +766,7 @@ install_ceres() {
     # build and install
     mkdir build && cd build
     cmake ..
-    make -j${NUM_THREADS}
+    make -j
     make install
 
     # clean
@@ -789,7 +789,7 @@ install_doxygen() {
     mkdir build
     cd build
     cmake -G "Unix Makefiles" ..
-    make -j${NUM_THREADS}
+    make -j
     make install
 
     # Clean up
@@ -808,7 +808,7 @@ install_geographiclib() {
     # build cmake
     mkdir build && cd build &&
         cmake .. &&
-        make -j${NUM_THREADS} &&
+        make -j &&
         make install &&
         cd /tmp &&
         rm -rf geographiclib
@@ -825,7 +825,7 @@ install_gtsam() {
     # build and install
     mkdir build && cd build
     cmake -DGTSAM_BUILD_WITH_MARCH_NATIVE=OFF ..
-    make -j${NUM_THREADS}
+    make -j
     make install
 
     # clean
@@ -848,7 +848,7 @@ install_proj() {
     # Build proj
     cd proj-${PROJ_VERSION}
     cmake -Bbuild -H. -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DBUILD_TESTING=OFF
-    cmake --build build -j${NUM_THREADS}
+    cmake --build build -j
     cmake --build build --target install
 
     # Clean up
@@ -866,7 +866,7 @@ install_sophus() {
     # build and install
     mkdir build && cd build
     cmake .. -DBUILD_SOPHUS_TESTS=OFF
-    make -j${NUM_THREADS}
+    make -j
     make install
 
     # clean
@@ -883,7 +883,7 @@ install_c_periphery() {
     mkdir build
     cd build
     cmake -DBUILD_SHARED_LIBS=ON ..
-    make -j${NUM_THREADS}
+    make -j
     make install
 
     # clean
